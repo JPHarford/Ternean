@@ -5,10 +5,9 @@ public class TerneanOps {
     public static byte or3(byte l, byte r) {
 
         return (byte) (
-                
-                l + r <= 0        ?
-                l != 0 && r != 0  ?
-                l + r != 0        ?  -1 : 1 : 0 : 1
+
+            l + r != -2 ?
+            l != 1 && r != 1 ? 0 : 1 : -1
         );
     }
     
@@ -16,8 +15,8 @@ public class TerneanOps {
         
         return (byte) (
 
-                l + r != 2            ?
-                l != -1 && r != -1    ? 0 : -1 : 1
+            l + r != 2            ?
+            l == -1 || r == -1    ? 0 : -1 : 1
         );
     }
     
@@ -25,9 +24,8 @@ public class TerneanOps {
         
         return (byte) (
 
-            l != -1     ?
-            l !=  1     ?
-            r !=  1   ?  0 : 1 : r : 1
+            l != 1 ?
+            r != 1 ? -l : 1 : r
         );
     }
     
@@ -35,9 +33,8 @@ public class TerneanOps {
         
         return (byte) (
 
-            r != -1   ?
-            r !=  1   ?
-            l !=  1     ?  0 : 1 : l : 1
+            r != 1 ?
+            l != 1 ? -r : 1 : l
         );
     }
     
@@ -45,8 +42,8 @@ public class TerneanOps {
         
         return (byte) (
 
-                abs(l + r) != 2   ?
-                l * r != 0        ?  1 : 0 : -1
+            abs(l + r) != 2   ?
+            l * r != 0        ?  1 : 0 : -1
         );
     }
     
