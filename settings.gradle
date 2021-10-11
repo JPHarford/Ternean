@@ -1,0 +1,4 @@
+rootProject.name = 'Ternary Logic'
+include 'src'
+include 'Ternary'
+
