@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MetaTerneanTest" tests="29" skipped="0" failures="0" errors="0" timestamp="2021-10-13T04:28:01" hostname="DUKE" time="0.032">
+  <properties/>
+  <testcase name="historyEquals()" classname="MetaTerneanTest" time="0.014"/>
+  <testcase name="testToString()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="setAnd()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setEqu()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="setNeg()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setXor()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="historyToString()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setOr()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="trueHistoryEquals()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="createAnd()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="createEqu()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="createNeg()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="createXor()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="maybeHistoryEquals()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="testSetValue1()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="testSetValue2()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="testSetValue3()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="testSetValue4()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="testSetValue5()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="testSetValue6()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="testSetValue7()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="createLImp()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="createRImp()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setValue()" classname="MetaTerneanTest" time="0.001"/>
+  <testcase name="falseHistoryEquals()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="createOr()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setLImp()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="setRImp()" classname="MetaTerneanTest" time="0.0"/>
+  <testcase name="testSetValue()" classname="MetaTerneanTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

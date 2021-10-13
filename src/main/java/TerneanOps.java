@@ -16,7 +16,7 @@ public class TerneanOps {
         return (byte) (
 
             l + r != 2            ?
-            l == -1 || r == -1    ? 0 : -1 : 1
+            l == -1 || r == -1    ? -1 : 0 : 1
         );
     }
     

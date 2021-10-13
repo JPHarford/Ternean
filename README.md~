@@ -18,3 +18,7 @@ Planned
      - State history frequentist/Jacobian operations 
      - State history Bayesian operations
      - Boolean registry with inferred relationship mapping
+
+     - All related unit tests
+
+     - Predictive demonstration

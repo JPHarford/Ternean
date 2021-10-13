@@ -6,11 +6,11 @@ Complete
 
      - Boolean-like ternary operations and unit tests  
      - Persistent ternary state and unit tests
-     - State counting
+     - State counting and unit tests
 
 In-Progress
 
-     - State counting unit tests
+     - N/A
 
 Planned
 
