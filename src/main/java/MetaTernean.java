@@ -1,9 +1,13 @@
-import static java.lang.Math.signum;
 
+/**
+ * Provides an historical count of ternary states.
+ * @author - Jeremy P. Harford
+ * @author - https://github.com/JPHarford
+ */
 @SuppressWarnings("unused")
 public class MetaTernean extends Ternean {
 
-    private final int[] stateCounts;
+    protected final int[] stateCounts;
     {
         stateCounts = new int[]{0, 0, 0};
     }
@@ -14,12 +18,25 @@ public class MetaTernean extends Ternean {
     public MetaTernean(){}
 
     /**
+     * Down-Cast constructor creates a MetaTernean with the same state and history as the source.
+     * @param source - the MetaTernean to be copied.
+     */
+    public MetaTernean(ProTernean source) {
+
+        state = source.state;
+
+        stateCounts[0] = source.stateCounts[0];
+        stateCounts[1] = source.stateCounts[1];
+        stateCounts[2] = source.stateCounts[2];
+    }
+
+    /**
      * Copy constructor creates a MetaTernean with the same state and history as the source.
      * @param source - the MetaTernean to be copied.
      */
     public MetaTernean(MetaTernean source) {
 
-        value = source.value;
+        state = source.state;
 
         stateCounts[0] = source.stateCounts[0];
         stateCounts[1] = source.stateCounts[1];
@@ -28,41 +45,13 @@ public class MetaTernean extends Ternean {
 
     /**
      * Construct a MetaTernean using a boolean value.
-     * @param value - boolean input.
+     * @param value - initial state.
      */
     public MetaTernean(boolean value) {
 
-        this.value = (byte) (value ? 1 : -1);
+        this.state = (byte) (value ? 1 : -1);
 
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Construct a MetaTernean using an 8-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public MetaTernean(byte value) {
-
-        this.value = value != 0 ? (byte) signum(value) : 0;
-
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Construct a MetaTernean using a 16-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public MetaTernean(short value) {
-
-        this.value = value != 0 ? (byte) signum(value) : 0;
-
-        stateCounts[this.value + 1]++;
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -74,38 +63,11 @@ public class MetaTernean extends Ternean {
      */
     public MetaTernean(char value) {
 
-        this.value =    value == 't' || value == 'T' ? (byte) 1 :
-                value == 'f' || value == 'F' ? (byte)-1 : 0;
+        state =
+                value == 't' || value == 'T' ? (byte) 1 :
+                        value == 'f' || value == 'F' ? (byte)-1 : 0;
 
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Construct a MetaTernean using a 32-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public MetaTernean(int value) {
-
-        this.value = value != 0 ? (byte) signum(value) : 0;
-
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Construct a MetaTernean using a 64-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public MetaTernean(long value) {
-
-        this.value = value != 0 ? (byte) signum(value) : 0;
-
-        stateCounts[this.value + 1]++;
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -117,10 +79,109 @@ public class MetaTernean extends Ternean {
      */
     public MetaTernean(String value) {
 
-        this.value =    value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" ) ? (byte) 1 :
-                value.equals("false") || value.equals("False") || value.equals("FALSE") ? (byte)-1 : 0;
+        state = fromString(value);
+        stateCounts[state + 1]++;
+    }
 
-        stateCounts[this.value + 1]++;
+    /**
+     * Construct a MetaTernean using an 8-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(byte value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Construct a MetaTernean using a 16-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(short value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Construct a MetaTernean using a 32-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(int value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Construct a MetaTernean using a 64-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(long value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Construct a MetaTernean using a 32-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(float value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Construct a MetaTernean using a 64-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state.
+     */
+    public MetaTernean(double value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Copies Ternean state.
+     * @param r - Ternean whose state to copy.
+     */
+    @Override
+    public void setValue(Ternean r) {
+
+        super.setValue(r.state);
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -131,35 +192,7 @@ public class MetaTernean extends Ternean {
     public void setValue(boolean value) {
 
         super.setValue(value);
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Set MetaTernean state using an 8-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    @Override
-    public void setValue(byte value) {
-
-        super.setValue(value);
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Set MetaTernean state using a 16-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    @Override
-    public void setValue(short value) {
-
-        super.setValue(value);
-        stateCounts[this.value + 1]++;
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -173,35 +206,7 @@ public class MetaTernean extends Ternean {
     public void setValue(char value) {
 
         super.setValue(value);
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Set MetaTernean state using a 32-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    @Override
-    public void setValue(int value) {
-
-        super.setValue(value);
-        stateCounts[this.value + 1]++;
-    }
-
-    /**
-     * Set MetaTernean state using a 64-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    @Override
-    public void setValue(long value) {
-
-        super.setValue(value);
-        stateCounts[this.value + 1]++;
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -215,28 +220,91 @@ public class MetaTernean extends Ternean {
     public void setValue(String value) {
 
         super.setValue(value);
-        stateCounts[this.value + 1]++;
+        stateCounts[state + 1]++;
     }
 
     /**
-     * Copies Ternean state.
-     * @param r - Ternean whose state to copy.
+     * Set MetaTernean state using an 8-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
      */
     @Override
-    public void setValue(Ternean r) {
+    public void setValue(byte value) {
 
-        super.setValue(r.value);
-        stateCounts[this.value + 1]++;
+        super.setValue(value);
+        stateCounts[state + 1]++;
     }
 
     /**
-     * Copies CURRENT state.  To copy current state and history, use the copy constructor.
-     * @param r - MetaTernean whose state to copy.
+     * Set MetaTernean state using a 16-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
      */
-    public void setValue(MetaTernean r) {
+    @Override
+    public void setValue(short value) {
 
-        value = r.value;
-        stateCounts[this.value + 1]++;
+        super.setValue(value);
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Set MetaTernean state using a 32-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    @Override
+    public void setValue(int value) {
+
+        super.setValue(value);
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Set MetaTernean state using a 64-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    @Override
+    public void setValue(long value) {
+
+        super.setValue(value);
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Set MetaTernean state using a 32-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    @Override
+    public void setValue(float value) {
+
+        super.setValue(value);
+        stateCounts[state + 1]++;
+    }
+
+    /**
+     * Set MetaTernean state using a 64-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    @Override
+    public void setValue(double value) {
+
+        super.setValue(value);
+        stateCounts[state + 1]++;
     }
 
     /**
@@ -261,7 +329,7 @@ public class MetaTernean extends Ternean {
     @Override
     public String toString() {
 
-        switch(value) {
+        switch(state) {
 
             case -1: {
 
@@ -354,103 +422,119 @@ public class MetaTernean extends Ternean {
      * Returns a MetaTernean with true state when either predicate is true.
      * Returns a MetaTernean with false state when both predicates are false.
      * All other cases return a MetaTernean with maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of an OR operation between l and r
      */
     public static MetaTernean createOr(Ternean l, Ternean r) {
 
-        return new MetaTernean(or3(l.value, r.value));
+        return new MetaTernean(or3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean with true state when both predicates are true.
      * Returns a MetaTernean with false state when either predicate is false.
      * ALl other cases return a MetaTernean with maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of an AND operation between l and r
      */
     public static MetaTernean createAnd(Ternean l, Ternean r) {
 
-        return new MetaTernean(and3(l.value, r.value));
+        return new MetaTernean(and3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean with true state where l is true and r is not false.
      * Returns a MetaTernean with false state where l is true and r is false.
      * ALl other cases return a MetaTernean in l maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of RMP operation between l and r
      */
     public static MetaTernean createRImp(Ternean l, Ternean r) {
 
-        return new MetaTernean(rImp3(l.value, r.value));
+        return new MetaTernean(rImp3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean with true state where r is true and l is not false.
      * Returns a MetaTernean with false state where r is true and l is false.
      * ALl other cases return a MetaTernean in l maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of LMP operation between l and r
      */
     public static MetaTernean createLImp(Ternean l, Ternean r) {
 
-        return new MetaTernean(lImp3(l.value, r.value));
+        return new MetaTernean(lImp3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean with true state when neither predicate is maybe and one predicate is true.
      * Returns a MetaTernean with false state when neither predicate is maybe and the predicates are in the same state.
      * Returns a MetaTernean with maybe state when either predicate is maybe.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of XOR operation between l and r
      */
     public static MetaTernean createXor(Ternean l, Ternean r) {
 
-        return new MetaTernean(xor3(l.value, r.value));
+        return new MetaTernean(xor3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean with true state if neither predicate is maybe and the predicates have the same state.
-     * Returns a MetaTernean with false state if neither predicate is maybe and the predicates do not have the same state.
+     * Returns a MetaTernean with false state if neither predicate is maybe and the predicates have different state.
      * Returns a MetaTernean with maybe state if either predicate is maybe.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - left-hand operand
      * @param r - right-hand operand
      * @return - resultant of EQU operation between l and r
      */
     public static MetaTernean createEqu(Ternean l, Ternean r) {
 
-        return new MetaTernean(equ3(l.value, r.value));
+        return new MetaTernean(equ3(l.state, r.state));
     }
 
     /**
      * Returns a MetaTernean in true state where l is in false state.
      * Returns a MetaTernean in false state where l is in true state.
      * Returns a MetaTernean in maybe state where l is in maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history for the new MetaTernean reflects only the state assigned as a result of this operation.
      * @param l - operand
      * @return - resultant of a NOT operation on MetaTernean l
      */
     public static MetaTernean createNeg(Ternean l) {
 
-        return new MetaTernean(neg3(l.value));
+        return new MetaTernean(neg3(l.state));
     }
 
     /**
      * Sets this MetaTernean to a true state when either predicate is true.
      * Sets this MetaTernean to a false state when both predicates are false.
      * All other cases set this MetaTernean to a maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean as the resultant of an OR operation with r
      */
     public MetaTernean setOr(Ternean r) {
 
-        value = or3(value, r.value);
-        stateCounts[value + 1]++;
+        state = or3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
@@ -459,13 +543,15 @@ public class MetaTernean extends Ternean {
      * Sets this MetaTernean to a true state when both predicates are true.
      * Sets this MetaTernean to a false state when either predicate is false.
      * ALl other cases set this MetaTernean to a maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean as the resultant of an AND operation with r
      */
     public MetaTernean setAnd(Ternean r) {
 
-        value = and3(value, r.value);
-        stateCounts[value + 1]++;
+        state = and3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
@@ -474,13 +560,15 @@ public class MetaTernean extends Ternean {
      * Sets this MetaTernean to a true state where a is true and r is not false.
      * Sets this MetaTernean to a false state where a is true and r is false.
      * ALl other cases sets this MetaTernean to a maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean as the resultant of RMP operation with r
      */
     public MetaTernean setRImp(Ternean r) {
 
-        value = rImp3(value, r.value);
-        stateCounts[value + 1]++;
+        state = rImp3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
@@ -489,28 +577,32 @@ public class MetaTernean extends Ternean {
      * Sets this MetaTernean to a true state where r is true and a is not false.
      * Sets this MetaTernean to a false state where r is true and a is false.
      * ALl other cases sets this MetaTernean to a maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean the as resultant of LMP operation with r
      */
     public MetaTernean setLImp(Ternean r) {
 
-        value = lImp3(value, r.value);
-        stateCounts[value + 1]++;
+        state = lImp3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
 
     /**
      * Sets this MetaTernean to a true state when neither predicate is maybe and one predicate is true.
-     * Sets this MetaTernean to a false state when neither predicate is maybe and the predicates are in the same state.
+     * Returns a MetaTernean with false state if neither predicate is maybe and the predicates have different state.
      * Sets this MetaTernean to a maybe state when either predicate is maybe.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean as the resultant of XOR operation with r
      */
     public MetaTernean setXor(Ternean r) {
 
-        value = xor3(value, r.value);
-        stateCounts[value + 1]++;
+        state = xor3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
@@ -519,13 +611,15 @@ public class MetaTernean extends Ternean {
      * Sets this MetaTernean to a true state if neither predicate is maybe and the predicates have the same state.
      * Sets this MetaTernean to a false state if neither predicate is maybe and the predicates do not have the same state.
      * Sets this MetaTernean to a maybe state if either predicate is maybe.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @param r - right-hand operand
      * @return - this MetaTernean as the resultant of EQU operation with r
      */
     public MetaTernean setEqu(Ternean r) {
 
-        value = equ3(value, r.value);
-        stateCounts[value + 1]++;
+        state = equ3(state, r.state);
+        stateCounts[state + 1]++;
 
         return this;
     }
@@ -534,12 +628,14 @@ public class MetaTernean extends Ternean {
      * Sets this MetaTernean to true state where it is in false state.
      * Sets this MetaTernean to false state where it is in true state.
      * Sets this MetaTernean this maybe state where it is in maybe state.
+     * State history is not redistributed because MetaTernean does not support probabilities.
+     * State history is updated as though the resultant is a new sample.
      * @return - this as the resultant of a NOT operation on this
      */
     public MetaTernean setNeg() {
 
-        value = neg3(value);
-        stateCounts[value + 1]++;
+        state = neg3(state);
+        stateCounts[state + 1]++;
 
         return this;
     }

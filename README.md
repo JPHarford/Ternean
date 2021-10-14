@@ -10,13 +10,12 @@ Complete
 
 In-Progress
 
-     - N/A
+     - Frequentist state distribution covering predicate tables with roundoff error compensated
 
 Planned
 
-     - State history proportions updated on state change
-     - State history frequentist/Jacobian operations 
      - State history Bayesian operations
+     - Repetitive simulated experiment sampling through Bayesian recursion to eliminate uncertainty
      - Boolean registry with inferred relationship mapping
 
      - All related unit tests

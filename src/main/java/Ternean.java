@@ -1,5 +1,4 @@
 
-import static java.lang.Math.signum;
 
 /**
  * Provides a type for third order logical operations.
@@ -9,7 +8,7 @@ import static java.lang.Math.signum;
 @SuppressWarnings("unused")
 public class Ternean extends TerneanOps {
 
-    protected byte value = 0;
+    protected byte state = 0;
 
     /**
      * Default constructor creates a Ternean with maybe state.
@@ -20,42 +19,18 @@ public class Ternean extends TerneanOps {
      * Copy constructor creates a Ternean with the same state as Ternean source.
      * @param source - Ternean to be copied
      */
-    public Ternean(Ternean source)
-    {
-        this.value = source.value;
+    public Ternean(Ternean source) {
+
+        state = source.state;
     }
 
     /**
      * Construct a Ternean using a boolean value.
-     * @param value - boolean input.
+     * @param value - initial state
      */
     public Ternean(boolean value) {
 
-        this.value = value ? (byte) 1 : (byte) -1;
-    }
-
-    /**
-     * Construct a Ternean using an 8-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public Ternean(byte value) {
-
-        this.value = (value != 0) ? (byte) signum(value) : 0;
-    }
-
-    /**
-     * Construct a Ternean using a 16-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public Ternean(short value) {
-
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = value ? (byte) 1 : (byte) -1;
     }
 
     /**
@@ -63,36 +38,12 @@ public class Ternean extends TerneanOps {
      *  t | T : true
      *  other : maybe
      *  f | F : false
-     * @param value - character input.
+     * @param value - initial state
      */
     public Ternean(char value) {
 
-        this.value =    ( value == 't' || value == 'T') ? ((byte) 1) :
-                    ((value == 'f' || value == 'F') ? ((byte)-1) : 0);
-    }
-
-    /**
-     * Construct a Ternean using a 32-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public Ternean(int value) {
-
-        this.value = (value != 0) ? (byte) signum(value) : 0;
-    }
-
-    /**
-     * Construct a Ternean using a 64-bit integer.
-     *  value >  0 : true
-     *  value == 0 : maybe
-     *  value <  0 : false
-     * @param value - numeric input.
-     */
-    public Ternean(long value) {
-
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = ( value == 't' || value == 'T') ? ((byte) 1) :
+                ((value == 'f' || value == 'F') ? ((byte)-1) : 0);
     }
 
     /**
@@ -100,12 +51,90 @@ public class Ternean extends TerneanOps {
      *  true | True | TRUE    : true
      *  other : maybe
      *  false | False | FALSE : false
-     * @param value - string input.
+     * @param value - initial state
      */
     public Ternean(String value) {
 
-        this.value =    ( value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" )) ? ((byte) 1) :
-                    ((value.equals("false") || value.equals("False") || value.equals("FALSE")) ? ((byte)-1) : 0);
+        state = ( value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" )) ? ((byte) 1) :
+                ((value.equals("false") || value.equals("False") || value.equals("FALSE")) ? ((byte)-1) : 0);
+    }
+
+    /**
+     * Construct a Ternean using an 8-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(byte value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Construct a Ternean using a 16-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(short value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Construct a Ternean using a 32-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(int value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Construct a Ternean using a 64-bit integer.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(long value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Construct a Ternean using a 32-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(float value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Construct a Ternean using a 64-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - initial state
+     */
+    public Ternean(double value)
+    {
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
     }
 
     /**
@@ -114,7 +143,7 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(boolean value) {
 
-        this.value = value ? (byte) 1 : (byte) -1;
+        state = value ? (byte) 1 : (byte) -1;
     }
 
     /**
@@ -126,7 +155,8 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(byte value) {
 
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
     }
 
     /**
@@ -138,7 +168,8 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(short value) {
 
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
     }
 
     /**
@@ -150,8 +181,8 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(char value) {
 
-        this.value =    ( value == 't' || value == 'T') ? ((byte) 1) :
-                    ((value == 'f' || value == 'F') ? ((byte)-1) : 0);
+        state = (value != 't' && value != 'T') ?
+                (value == 'f' || value == 'F') ? (byte) -1 : 0 : 1;
     }
 
     /**
@@ -163,7 +194,8 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(int value) {
 
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
     }
 
     /**
@@ -175,7 +207,34 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(long value) {
 
-        this.value = (value != 0) ? (byte) signum(value) : 0;
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Set Ternean state using a 32-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    public void setValue(float value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
+    }
+
+    /**
+     * Set Ternean state using a 64-bit floating point.
+     *  value >  0 : true
+     *  value == 0 : maybe
+     *  value <  0 : false
+     * @param value - numeric input.
+     */
+    public void setValue(double value) {
+
+        state = value >=  0 ?
+                value ==  0 ? (byte) 0 : -1 : 1;
     }
 
     /**
@@ -187,13 +246,19 @@ public class Ternean extends TerneanOps {
      */
     public void setValue(String value) {
 
-        this.value =    ( value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" )) ? ((byte) 1) :
+        state =    ( value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" )) ? ((byte) 1) :
                     ((value.equals("false") || value.equals("False") || value.equals("FALSE")) ? ((byte)-1) : 0);
     }
 
     public void setValue(Ternean r) {
 
-        value = r.value;
+        state = r.state;
+    }
+
+    protected byte fromString(String value) {
+
+        return  value.equals("true" ) || value.equals("True" ) || value.equals("TRUE" ) ? (byte) 1 :
+                value.equals("false") || value.equals("False") || value.equals("FALSE") ? (byte)-1 : 0;
     }
 
     /**
@@ -202,22 +267,22 @@ public class Ternean extends TerneanOps {
      */
     public byte getByte() {
 
-        return value;
+        return state;
     }
 
     public short getShort() {
 
-        return value;
+        return state;
     }
 
     public int getInt() {
 
-        return value;
+        return state;
     }
 
     public char getChar() {
 
-        switch(value) {
+        switch(state) {
 
             case -1: {
 
@@ -238,7 +303,7 @@ public class Ternean extends TerneanOps {
     public String toString() {
 
 
-        switch(value) {
+        switch(state) {
 
             case -1: {
 
@@ -261,7 +326,7 @@ public class Ternean extends TerneanOps {
      */
     public boolean biasFalse() {
 
-        return value > 0;
+        return state > 0;
     }
 
     /**
@@ -270,7 +335,7 @@ public class Ternean extends TerneanOps {
      */
     public boolean biasTrue() {
 
-        return !(value < 0);
+        return !(state < 0);
     }
 
     /**
@@ -333,7 +398,7 @@ public class Ternean extends TerneanOps {
      */
     public boolean equals(Ternean r) {
 
-        return value == r.value;
+        return state == r.state;
     }
 
     /**
@@ -346,7 +411,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createOr(Ternean l, Ternean r) {
 
-        return new Ternean(or3(l.value, r.value));
+        return new Ternean(or3(l.state, r.state));
     }
 
     /**
@@ -359,7 +424,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createAnd(Ternean l, Ternean r) {
 
-        return new Ternean(and3(l.value, r.value));
+        return new Ternean(and3(l.state, r.state));
     }
 
     /**
@@ -372,7 +437,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createRImp(Ternean l, Ternean r) {
 
-        return new Ternean(rImp3(l.value, r.value));
+        return new Ternean(rImp3(l.state, r.state));
     }
 
     /**
@@ -385,7 +450,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createLImp(Ternean l, Ternean r) {
 
-        return new Ternean(lImp3(l.value, r.value));
+        return new Ternean(lImp3(l.state, r.state));
     }
 
     /**
@@ -398,7 +463,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createXor(Ternean l, Ternean r) {
 
-        return new Ternean(xor3(l.value, r.value));
+        return new Ternean(xor3(l.state, r.state));
     }
 
     /**
@@ -411,7 +476,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createEqu(Ternean l, Ternean r) {
 
-        return new Ternean(equ3(l.value, r.value));
+        return new Ternean(equ3(l.state, r.state));
     }
 
     /**
@@ -423,7 +488,7 @@ public class Ternean extends TerneanOps {
      */
     public static Ternean createNeg(Ternean l) {
 
-        return new Ternean(neg3(l.value));
+        return new Ternean(neg3(l.state));
     }
 
     /**
@@ -435,7 +500,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setOr(Ternean r) {
 
-        value = or3(value, r.value);
+        state = or3(state, r.state);
         return this;
     }
 
@@ -448,7 +513,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setAnd(Ternean r) {
 
-        value = and3(value, r.value);
+        state = and3(state, r.state);
         return this;
     }
 
@@ -461,7 +526,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setRImp(Ternean r) {
 
-        value = rImp3(value, r.value);
+        state = rImp3(state, r.state);
         return this;
     }
 
@@ -474,7 +539,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setLImp(Ternean r) {
 
-        value = lImp3(value, r.value);
+        state = lImp3(state, r.state);
         return this;
     }
 
@@ -487,7 +552,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setXor(Ternean r) {
 
-        value = xor3(value, r.value);
+        state = xor3(state, r.state);
         return this;
     }
 
@@ -500,7 +565,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setEqu(Ternean r) {
 
-        value = equ3(value, r.value);
+        state = equ3(state, r.state);
         return this;
     }
 
@@ -512,7 +577,7 @@ public class Ternean extends TerneanOps {
      */
     public Ternean setNeg() {
 
-        value = neg3(value);
+        state = neg3(state);
         return this;
     }
 }
